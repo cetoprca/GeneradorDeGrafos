@@ -169,10 +169,10 @@ public class Graph {
         StringBuilder relations = new StringBuilder();
 
         for (Node node : nodes){
-            String nodeID = getNodeID(node);
+            String nodeID = getID(node.nodeid);
 
             for (int verticeId : node.vertices.keySet()) {
-                String verticeChar = getVerticeID(verticeId);
+                String verticeChar = getID(verticeId);
 
                 relations.append(nodeID).append(" ").append(verticeChar).append(" ").append(node.vertices.get(verticeId)).append("\n");
             }
@@ -181,79 +181,41 @@ public class Graph {
         return relations.toString();
     }
 
-    private static String getNodeID(Node node) {
-        String nodeChar = "";
+    public static String getID(int id) {
+        String ID = "";
 
-        switch (node.nodeid%26){
-            case 0 -> nodeChar = "A";
-            case 1 -> nodeChar = "B";
-            case 2 -> nodeChar = "C";
-            case 3 -> nodeChar = "D";
-            case 4 -> nodeChar = "E";
-            case 5 -> nodeChar = "F";
-            case 6 -> nodeChar = "G";
-            case 7 -> nodeChar = "H";
-            case 8 -> nodeChar = "I";
-            case 9 -> nodeChar = "J";
-            case 10 -> nodeChar = "K";
-            case 11 -> nodeChar = "L";
-            case 12 -> nodeChar = "M";
-            case 13 -> nodeChar = "N";
-            case 14 -> nodeChar = "O";
-            case 15 -> nodeChar = "P";
-            case 16 -> nodeChar = "Q";
-            case 17 -> nodeChar = "R";
-            case 18 -> nodeChar = "S";
-            case 19 -> nodeChar = "T";
-            case 20 -> nodeChar = "U";
-            case 21 -> nodeChar = "V";
-            case 22 -> nodeChar = "W";
-            case 23 -> nodeChar = "X";
-            case 24 -> nodeChar = "Y";
-            case 25 -> nodeChar = "Z";
+        switch (id %26){
+            case 0 -> ID = "A";
+            case 1 -> ID = "B";
+            case 2 -> ID = "C";
+            case 3 -> ID = "D";
+            case 4 -> ID = "E";
+            case 5 -> ID = "F";
+            case 6 -> ID = "G";
+            case 7 -> ID = "H";
+            case 8 -> ID = "I";
+            case 9 -> ID = "J";
+            case 10 -> ID = "K";
+            case 11 -> ID = "L";
+            case 12 -> ID = "M";
+            case 13 -> ID = "N";
+            case 14 -> ID = "O";
+            case 15 -> ID = "P";
+            case 16 -> ID = "Q";
+            case 17 -> ID = "R";
+            case 18 -> ID = "S";
+            case 19 -> ID = "T";
+            case 20 -> ID = "U";
+            case 21 -> ID = "V";
+            case 22 -> ID = "W";
+            case 23 -> ID = "X";
+            case 24 -> ID = "Y";
+            case 25 -> ID = "Z";
         }
 
-        if (node.nodeid/26 != 0){
-            nodeChar = nodeChar + node.nodeid/26;
+        if (id /26 != 0){
+            ID = ID + id /26;
         }
-        return nodeChar;
-    }
-    private static String getVerticeID(int verticeId){
-        String verticeChar = "";
-
-        switch (verticeId%26){
-            case 0 -> verticeChar = "A";
-            case 1 -> verticeChar = "B";
-            case 2 -> verticeChar = "C";
-            case 3 -> verticeChar = "D";
-            case 4 -> verticeChar = "E";
-            case 5 -> verticeChar = "F";
-            case 6 -> verticeChar = "G";
-            case 7 -> verticeChar = "H";
-            case 8 -> verticeChar = "I";
-            case 9 -> verticeChar = "J";
-            case 10 -> verticeChar = "K";
-            case 11 -> verticeChar = "L";
-            case 12 -> verticeChar = "M";
-            case 13 -> verticeChar = "N";
-            case 14 -> verticeChar = "O";
-            case 15 -> verticeChar = "P";
-            case 16 -> verticeChar = "Q";
-            case 17 -> verticeChar = "R";
-            case 18 -> verticeChar = "S";
-            case 19 -> verticeChar = "T";
-            case 20 -> verticeChar = "U";
-            case 21 -> verticeChar = "V";
-            case 22 -> verticeChar = "W";
-            case 23 -> verticeChar = "X";
-            case 24 -> verticeChar = "Y";
-            case 25 -> verticeChar = "Z";
-        }
-
-        if (verticeId/26 != 0){
-            verticeChar = verticeChar + verticeId/26;
-        }
-
-        return verticeChar;
+        return ID;
     }
 }
