@@ -96,6 +96,11 @@ public class Graph {
         this.nodeAmmount = nodeAmmount;
     }
 
+    /**
+     * Generates a random ammount of nodes depending on nodeAmmount
+     * The number of nodes depends on the nodeAmmount, if the ammount is set as -1
+     * it will generate a random ammount of nodes between 1 and 100
+     */
     public void genNodes(){
         if (nodeAmmount == -1){
             Random r = new Random();
@@ -108,37 +113,55 @@ public class Graph {
         }
     }
 
+    /**
+     * Generates random vertices between random nodes with random weight
+     * The number of vertices depends on the verticesAmmount, if the ammount is set as -1
+     * it will generate a random ammount of vertices between 1 and 100
+     */
     public void genVertices(){
+        //If verticesAmmount is set as -1 the ammount of vertices generated will be random from 1 to 100
+        if (verticesAmmount == -1){
+            Random r = new Random();
+            verticesAmmount = r.nextInt(1,100);
+        }
+
+        //If only 1 node is generated, reflexiveness is disabled and vertices must be generated return since the parameters are contradictory
+        if (nodes.size() == 1 & verticesAmmount > 0 &!reflexive){
+            System.out.println("[ ERROR ] The given parameters are contradictory. No vertices can generate");
+            return;
+        }
+
+        //Warn the user min and max weights have to be min < max or else the weight wont work
         if (minWeight >= maxWeight & !weightWarning){
             weightWarning = true;
             System.out.println("[ ERROR ] Minimum weight must be smaller than maximum weight. Weights set to 0");
         }
 
-        if (verticesAmmount == -1){
+        //Generate two random nodes, if reflexiveness is disabled the second node will re-generate if it ends up being the first one
+        //If the weight warning has been activated, the weight will be 0, otherwise it will be a random value between minWeight and maxWeight
+        //The first node will connect to the second node
+        for (int i = 0; i < verticesAmmount; i++) {
             Random r = new Random();
-            verticesAmmount = r.nextInt(1,100);
-            genVertices();
-        }else {
-            for (int i = 0; i < verticesAmmount; i++) {
-                Random r = new Random();
 
-                Node rNode1 = nodes.get(r.nextInt(0,nodes.size()));
+            Node rNode1 = nodes.get(r.nextInt(0,nodes.size()));
 
-                Node rNode2 = nodes.get(r.nextInt(0,nodes.size()));
-                while (!reflexive & rNode2.nodeid == rNode1.nodeid){
-                    rNode2 = nodes.get(r.nextInt(0,nodes.size()));
-                }
-
-                int rWeight;
-                if (weightWarning){
-                    rWeight = 0;
-                }else rWeight = r.nextInt(minWeight,maxWeight);
-
-                rNode1.connectNode(rNode2, rWeight, directional);
+            Node rNode2 = nodes.get(r.nextInt(0,nodes.size()));
+            while (!reflexive & rNode2.nodeid == rNode1.nodeid){
+                rNode2 = nodes.get(r.nextInt(0,nodes.size()));
             }
+
+            int rWeight;
+            if (weightWarning){
+                rWeight = 0;
+            }else rWeight = r.nextInt(minWeight,maxWeight);
+
+            rNode1.connectNode(rNode2, rWeight, directional);
         }
     }
 
+    /**
+     * Removes all nodes without outwards relations (Aka dead ends)
+     */
     public void purge(){
         for (int i = 0; i < nodes.size(); i++) {
             if (nodes.get(i).vertices.isEmpty()){
@@ -165,57 +188,41 @@ public class Graph {
         System.out.println(getRelations());
     }
 
+    /**
+     * Scans the nodes in the graph and generates a string containing their IDs and the IDs of the nodes they connect to.
+     * [Origin Node] [Target Node] [Weight]
+     * @return String containing all relations between nodes in different lines. Ex: A B 3
+     */
     public String getRelations(){
         StringBuilder relations = new StringBuilder();
 
         for (Node node : nodes){
             String nodeID = getID(node.nodeid);
 
-            for (int verticeId : node.vertices.keySet()) {
-                String verticeChar = getID(verticeId);
+            for (int vertice : node.vertices.keySet()) {
+                String verticeID = getID(vertice);
 
-                relations.append(nodeID).append(" ").append(verticeChar).append(" ").append(node.vertices.get(verticeId)).append("\n");
+                relations.append(nodeID).append(" ").append(verticeID).append(" ").append(node.vertices.get(vertice)).append("\n");
             }
         }
 
+        relations.deleteCharAt(relations.length()-1);
         return relations.toString();
     }
 
+    /**
+     * Obtain an alphanumerical ID based in the number provided.
+     * @param id Number to be turned into alphanumerical ID
+     * @return Alphanurical ID. Ex: A, B3, X48
+     */
     public static String getID(int id) {
-        String ID = "";
+        StringBuilder ID = new StringBuilder();
 
-        switch (id %26){
-            case 0 -> ID = "A";
-            case 1 -> ID = "B";
-            case 2 -> ID = "C";
-            case 3 -> ID = "D";
-            case 4 -> ID = "E";
-            case 5 -> ID = "F";
-            case 6 -> ID = "G";
-            case 7 -> ID = "H";
-            case 8 -> ID = "I";
-            case 9 -> ID = "J";
-            case 10 -> ID = "K";
-            case 11 -> ID = "L";
-            case 12 -> ID = "M";
-            case 13 -> ID = "N";
-            case 14 -> ID = "O";
-            case 15 -> ID = "P";
-            case 16 -> ID = "Q";
-            case 17 -> ID = "R";
-            case 18 -> ID = "S";
-            case 19 -> ID = "T";
-            case 20 -> ID = "U";
-            case 21 -> ID = "V";
-            case 22 -> ID = "W";
-            case 23 -> ID = "X";
-            case 24 -> ID = "Y";
-            case 25 -> ID = "Z";
-        }
+        ID.append((char) ('A' + id % 26));
 
-        if (id /26 != 0){
-            ID = ID + id /26;
+        if (id/26 != 0){
+            ID.append(id/26);
         }
-        return ID;
+        return ID.toString();
     }
 }

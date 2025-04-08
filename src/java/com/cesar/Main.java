@@ -1,19 +1,22 @@
 package com.cesar;
 
-import com.cesar.DFS.DFS;
+import com.cesar.search.Search;
 import com.cesar.graph.Graph;
 
 public class Main {
 
     public static void main(String[] args) {
-        Graph graph = new Graph(20, 20, 0, 100, false, false);
+        Graph graph = new Graph(1, 4, 0, 20, true, false);
 
         graph.genNodes();
         graph.genVertices();
 
         graph.exportRelations();
 
-        DFS.populate(graph);
+        Search.populate(graph);
 
+        Search.exploreDFS(graph, graph.nodes.getFirst(), true);
+
+        System.out.println(Search.nodesToVisit.isEmpty() ? "All nodes reached" : "Not all nodes reached");
     }
 }
