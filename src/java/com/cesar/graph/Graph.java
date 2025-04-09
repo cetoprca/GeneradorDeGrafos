@@ -206,7 +206,9 @@ public class Graph {
             }
         }
 
-        relations.deleteCharAt(relations.length()-1);
+        if (!relations.isEmpty()){
+            relations.deleteCharAt(relations.length()-1);
+        }
         return relations.toString();
     }
 
