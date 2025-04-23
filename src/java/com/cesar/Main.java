@@ -14,11 +14,8 @@ public class Main {
 
         graph.exportRelations();
 
-        Search.populateNIDtI(graph);
-        Search.populateNTV(graph);
+        System.out.println(Search.explore(graph, 0) ? "All nodes reached" : "Not all nodes reached");
 
-        Search.exploreBFS(graph);
-
-        System.out.println(Search.nodesLeft.isEmpty() ? "All nodes reached" : "Not all nodes reached");
+        System.out.println(Search.explore(graph, 1) ? "All nodes reached" : "Not all nodes reached");
     }
 }
